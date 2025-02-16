@@ -35,7 +35,10 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Run build script
         run: |
-          echo "hello world" > index.html
+          pip install -r requirements.txt
+          python get_pfds.py
+          # echo "hello world" > index.html
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
