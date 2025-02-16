@@ -39,7 +39,7 @@ jobs:
         run: |
           set -e
           pip install -r requirements.txt
-          apt update && apt install install poppler-utils
+          apt update && apt install poppler-utils
           python get_pdfs.py
           echo "Build complete"
           ls .
