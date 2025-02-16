@@ -56,7 +56,7 @@ def is_downloaded(filename):
 
 
 def get_week():
-    # return 50 # TODO remove this when done testing
+    return 7 # TODO remove this when done testing
     weekday = datetime.datetime.now().isoweekday()
     if weekday <= 5:
         return datetime.datetime.now().isocalendar()[1]
