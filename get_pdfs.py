@@ -13,14 +13,9 @@ CLASS3_URL = "https://www.halden.kommune.no/gimle-skole/tjenester/trinn/3-trinn/
 
 OUT_PATH = os.getenv("OUT_PATH", ".")
 
-# TODO fix by url path
-# TODO delete old files
-
-
 def render_template(weekplans):
     context = {}
     context["title"] = "My Title"
-    # context ['pages'] = ["image1.png", "image2.png", "image3.png"]
     templateLoader = jinja2.FileSystemLoader(searchpath="./templates")
     templateEnv = jinja2.Environment(loader=templateLoader)
     TEMPLATE_FILE = "index.html"
@@ -56,7 +51,6 @@ def is_downloaded(filename):
 
 
 def get_week():
-    return 7 # TODO remove this when done testing
     weekday = datetime.datetime.now().isoweekday()
     if weekday <= 5:
         return datetime.datetime.now().isocalendar()[1]
@@ -105,6 +99,14 @@ def convert_pdf_to_images(weekplan: Dict):
             images.append(image_path)
     return images
 
+def render_error(error_message):
+    templateLoader = jinja2.FileSystemLoader(searchpath="./templates")
+    templateEnv = jinja2.Environment(loader=templateLoader)
+    template = templateEnv.get_template("error.html")
+    
+    with open(f"{OUT_PATH}/index.html", "w") as file:
+        outputText = template.render(error_message=str(error_message), week=get_week())
+        file.write(outputText)
 
 if __name__ == "__main__":
     try:
@@ -120,3 +122,4 @@ if __name__ == "__main__":
 
     except Exception as e:
         print(e)
+        render_error(e)
