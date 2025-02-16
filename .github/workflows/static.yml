@@ -39,6 +39,8 @@ jobs:
         run: |
           pip install -r requirements.txt
           python get_pdfs.py
+          echo "Build complete"
+          ls .
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
