@@ -36,8 +36,9 @@ jobs:
       - name: Run build script
         run: |
           pip install -r requirements.txt
-          python get_pfds.py
-          # echo "hello world" > index.html
+          playwright install chromium
+          playwright install-deps chromium
+          python get_pdfs.py
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
