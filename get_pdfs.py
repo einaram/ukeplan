@@ -143,3 +143,4 @@ if __name__ == "__main__":
         logging.exception("Error processing weekly plans")
         print(e)
         render_error(e)
+        raise e
