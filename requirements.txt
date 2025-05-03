@@ -1,3 +1,13 @@
-playwright
-pdf2image
-jinja2
+#playwright
+#pdf2image
+#jinja2
+
+
+greenlet==3.1.1
+Jinja2==3.1.5
+MarkupSafe==3.0.2
+pdf2image==1.17.0
+pillow==11.1.0
+playwright==1.52.0
+pyee==13.0.0
+typing_extensions==4.12.2

@@ -1,4 +1,5 @@
-FROM mcr.microsoft.com/playwright/python:v1.50.0-noble
+# NOT USED - use github actions instead
+FROM mcr.microsoft.com/playwright/python:v1.52.0-noble
 
 WORKDIR /app
 
