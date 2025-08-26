@@ -15,8 +15,8 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-CLASS1_URL = "https://www.halden.kommune.no/gimle-skole/tjenester/trinn/1-trinn/"
-CLASS3_URL = "https://www.halden.kommune.no/gimle-skole/tjenester/trinn/3-trinn/"
+CLASS1_URL = "https://www.halden.kommune.no/gimle-skole/tjenester/trinn/2-trinn/"
+CLASS3_URL = "https://www.halden.kommune.no/gimle-skole/tjenester/trinn/4-trinn/"
 
 OUT_PATH = os.getenv("OUT_PATH", ".")
 
