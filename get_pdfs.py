@@ -74,10 +74,10 @@ def get_weekplan(url, prefix):
         browser = p.webkit.launch()
         page = browser.new_page()
         page.goto(url)
-        regex = re.compile(f"^uke {get_week()}[^0-9]", re.IGNORECASE)
+        regex = re.compile(f"uke {get_week()}[^0-9]", re.IGNORECASE)
         logging.debug(f"Looking for week '{regex}' in {page.title()}")
         with page.expect_download() as download_info:
-            page.get_by_text(regex).click()
+            page.get_by_text(regex).first.click()
         download = download_info.value
 
         extension = download.suggested_filename.split(".")[-1]
