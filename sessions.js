@@ -100,8 +100,8 @@ function renderSessionsTable(rooms) {
       const cell = document.createElement('td');
       const session = findSessionForSlot(rooms[room] || [], slot);
       if (session) {
-        // Link to info page: https://2025.javazone.no/program/talk/${session.id}
-        let titleHtml = `<a href='https://2025.javazone.no/program/talk/${session.id}' target='_blank' rel='noopener' style='color:#007acc;text-decoration:underline;'>${session.title}</a>`;
+  // Link to info page: https://2025.javazone.no/en/program/{session.id}
+  let titleHtml = `<a href='https://2025.javazone.no/en/program/${session.id}' target='_blank' rel='noopener' style='color:#007acc;text-decoration:underline;'>${session.title}</a>`;
         cell.innerHTML = `<b>${titleHtml}</b><br><small>${(session.speakers||[]).map(s=>s.name).join(', ')}</small>`;
       } else {
         cell.innerHTML = '';
