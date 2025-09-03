@@ -1,10 +1,14 @@
 // sessions.js
 
 
+
 async function fetchSessions() {
   const res = await fetch('https://sleepingpill.javazone.no/public/allSessions/javazone_2025');
   if (!res.ok) throw new Error('Failed to fetch sessions');
-  return res.json();
+  const data = await res.json();
+  // Filter out workshops
+  data.sessions = data.sessions.filter(s => (s.format || '').toLowerCase() !== 'workshop');
+  return data;
 }
 
 function groupByRoom(sessions) {
