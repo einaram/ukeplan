@@ -76,17 +76,7 @@ function renderSessionsTable(rooms) {
   const rendered = {};
 
   const table = document.createElement('table');
-  table.border = '1';
-  table.cellPadding = '6';
-  table.cellSpacing = '0';
-  table.style.width = '100%';
-  table.style.background = '#fff';
-  table.style.borderCollapse = 'collapse';
-  table.style.fontFamily = 'Arial, sans-serif';
-  table.style.fontSize = '15px';
-  table.style.margin = '1em auto';
-  table.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
-  table.style.border = '1px solid #bbb';
+  table.className = 'sessions-table';
 
   // Header row
   const thead = document.createElement('thead');

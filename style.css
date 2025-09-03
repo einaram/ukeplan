@@ -1,3 +1,29 @@
+/* Table layout for sessions */
+table.sessions-table {
+  width: 100%;
+  background: #fff;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  margin: 1em auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid #bbb;
+}
+table.sessions-table th, table.sessions-table td {
+  border: 1px solid #bbb;
+  padding: 6px;
+  text-align: left;
+  vertical-align: top;
+}
+table.sessions-table th {
+  background: #f0f4f8;
+  font-weight: bold;
+  text-align: center;
+}
+table.sessions-table td a {
+  color: #007acc;
+  text-decoration: underline;
+}
 
 * { box-sizing: border-box; }
 body {
