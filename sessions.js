@@ -8,6 +8,14 @@ async function fetchSessions() {
   const data = await res.json();
   // Filter out workshops
   data.sessions = data.sessions.filter(s => (s.format || '').toLowerCase() !== 'workshop');
+  // Filter out sessions older than 1 hour from now
+  const now = new Date();
+  const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+  data.sessions = data.sessions.filter(s => {
+    if (!s.startTime) return false;
+    const start = new Date(s.startTime);
+    return start >= oneHourAgo;
+  });
   return data;
 }
 
@@ -60,6 +68,12 @@ function renderSessionsTable(rooms) {
   table.cellSpacing = '0';
   table.style.width = '100%';
   table.style.background = '#fff';
+  table.style.borderCollapse = 'collapse';
+  table.style.fontFamily = 'Arial, sans-serif';
+  table.style.fontSize = '15px';
+  table.style.margin = '1em auto';
+  table.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+  table.style.border = '1px solid #bbb';
 
   // Header row
   const thead = document.createElement('thead');
@@ -86,13 +100,8 @@ function renderSessionsTable(rooms) {
       const cell = document.createElement('td');
       const session = findSessionForSlot(rooms[room] || [], slot);
       if (session) {
-        let titleHtml = session.title;
-        // If video is present, link to video. Otherwise, link to #
-        if (session.video) {
-          titleHtml = `<a href='https://vimeo.com/${session.video}' target='_blank' rel='noopener'>${session.title}</a>`;
-        } else {
-          titleHtml = `<a href='#' title='No video available'>${session.title}</a>`;
-        }
+        // Link to info page: https://2025.javazone.no/program/talk/${session.id}
+        let titleHtml = `<a href='https://2025.javazone.no/program/talk/${session.id}' target='_blank' rel='noopener' style='color:#007acc;text-decoration:underline;'>${session.title}</a>`;
         cell.innerHTML = `<b>${titleHtml}</b><br><small>${(session.speakers||[]).map(s=>s.name).join(', ')}</small>`;
       } else {
         cell.innerHTML = '';
