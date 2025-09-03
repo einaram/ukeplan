@@ -1,5 +1,6 @@
 // sessions.js
 
+
 async function fetchSessions() {
   const res = await fetch('https://sleepingpill.javazone.no/public/allSessions/javazone_2025');
   if (!res.ok) throw new Error('Failed to fetch sessions');
@@ -28,35 +29,74 @@ function sortRooms(rooms) {
   });
 }
 
-function renderSessions(rooms) {
-  const container = document.getElementById('sessions-container');
+function getAllSlots(rooms) {
+  // Collect all unique start times (slots) across all rooms
+  const slots = new Set();
+  Object.values(rooms).forEach(sessions => {
+    sessions.forEach(s => {
+      slots.add(s.startTime);
+    });
+  });
+  return Array.from(slots).sort();
+}
+
+function findSessionForSlot(sessions, slot) {
+  return sessions.find(s => s.startTime === slot);
+}
+
+function renderSessionsTable(rooms) {
+  const container = document.getElementById('sessions-table-container');
   container.innerHTML = '';
   const sortedRooms = sortRooms(rooms);
+  const slots = getAllSlots(rooms);
+
+  const table = document.createElement('table');
+  table.border = '1';
+  table.cellPadding = '6';
+  table.cellSpacing = '0';
+  table.style.width = '100%';
+  table.style.background = '#fff';
+
+  // Header row
+  const thead = document.createElement('thead');
+  const headRow = document.createElement('tr');
+  headRow.appendChild(document.createElement('th')); // Empty for time column
   sortedRooms.forEach(room => {
-    const col = document.createElement('div');
-    col.className = 'session-column';
-    const header = document.createElement('h2');
-    header.textContent = room;
-    col.appendChild(header);
-    rooms[room]
-      .sort((a, b) => a.startTime.localeCompare(b.startTime))
-      .forEach(session => {
-        const card = document.createElement('div');
-        card.className = 'session-card';
-        card.innerHTML = `
-          <div class="session-title">${session.title}</div>
-          <div class="session-time">${session.startTime.substring(11,16)} - ${session.endTime.substring(11,16)}</div>
-          <div class="session-speaker">${(session.speakers||[]).map(s=>s.name).join(', ')}</div>
-        `;
-        col.appendChild(card);
-      });
-    container.appendChild(col);
+    const th = document.createElement('th');
+    th.textContent = room;
+    headRow.appendChild(th);
   });
+  thead.appendChild(headRow);
+  table.appendChild(thead);
+
+  // Body rows
+  const tbody = document.createElement('tbody');
+  slots.forEach(slot => {
+    const row = document.createElement('tr');
+    // Time column
+    const timeCell = document.createElement('td');
+    timeCell.textContent = slot.substring(11,16);
+    row.appendChild(timeCell);
+    // Session columns
+    sortedRooms.forEach(room => {
+      const cell = document.createElement('td');
+      const session = findSessionForSlot(rooms[room] || [], slot);
+      if (session) {
+        cell.innerHTML = `<b>${session.title}</b><br><small>${(session.speakers||[]).map(s=>s.name).join(', ')}</small>`;
+      } else {
+        cell.innerHTML = '';
+      }
+      row.appendChild(cell);
+    });
+    tbody.appendChild(row);
+  });
+  table.appendChild(tbody);
+  container.appendChild(table);
 }
 
 fetchSessions()
-  .then(data => renderSessions(groupByRoom(data.sessions)))
+  .then(data => renderSessionsTable(groupByRoom(data.sessions)))
   .catch(err => {
-    document.getElementById('sessions-container').textContent = 'Failed to load sessions.';
+    document.getElementById('sessions-table-container').textContent = 'Failed to load sessions.';
     console.error(err);
   });
