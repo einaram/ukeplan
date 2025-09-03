@@ -52,15 +52,28 @@ function getAllSlots(rooms) {
   return Array.from(slots).sort();
 }
 
+function getSessionDurationInSlots(session, slots) {
+  // Count how many slots this session spans (by start/endTime)
+  if (!session.startTime || !session.endTime) return 1;
+  const startIdx = slots.indexOf(session.startTime);
+  const endIdx = slots.indexOf(session.endTime);
+  if (startIdx === -1 || endIdx === -1) return 1;
+  return Math.max(1, endIdx - startIdx);
+}
+
 function findSessionForSlot(sessions, slot) {
   return sessions.find(s => s.startTime === slot);
 }
+
 
 function renderSessionsTable(rooms) {
   const container = document.getElementById('sessions-table-container');
   container.innerHTML = '';
   const sortedRooms = sortRooms(rooms);
   const slots = getAllSlots(rooms);
+
+  // Track which sessions are already rendered (for rowspan)
+  const rendered = {};
 
   const table = document.createElement('table');
   table.border = '1';
@@ -89,7 +102,8 @@ function renderSessionsTable(rooms) {
 
   // Body rows
   const tbody = document.createElement('tbody');
-  slots.forEach(slot => {
+  for (let slotIdx = 0; slotIdx < slots.length; ++slotIdx) {
+    const slot = slots[slotIdx];
     const row = document.createElement('tr');
     // Time column
     const timeCell = document.createElement('td');
@@ -97,19 +111,30 @@ function renderSessionsTable(rooms) {
     row.appendChild(timeCell);
     // Session columns
     sortedRooms.forEach(room => {
-      const cell = document.createElement('td');
-      const session = findSessionForSlot(rooms[room] || [], slot);
-      if (session) {
-  // Link to info page: https://2025.javazone.no/en/program/{session.id}
-  let titleHtml = `<a href='https://2025.javazone.no/en/program/${session.id}' target='_blank' rel='noopener' style='color:#007acc;text-decoration:underline;'>${session.title}</a>`;
+      // Check if a session is already rendered for this room (rowspan)
+      const roomSessions = rooms[room] || [];
+      const session = findSessionForSlot(roomSessions, slot);
+      if (session && !rendered[room + session.startTime]) {
+        // Calculate rowspan
+        const duration = getSessionDurationInSlots(session, slots);
+        const cell = document.createElement('td');
+        cell.rowSpan = duration;
+        let titleHtml = `<a href='https://2025.javazone.no/en/program/${session.id}' target='_blank' rel='noopener' style='color:#007acc;text-decoration:underline;'>${session.title}</a>`;
         cell.innerHTML = `<b>${titleHtml}</b><br><small>${(session.speakers||[]).map(s=>s.name).join(', ')}</small>`;
-      } else {
+        row.appendChild(cell);
+        // Mark this session as rendered for the next (duration-1) slots
+        for (let i = 0; i < duration; ++i) {
+          rendered[room + slots[slotIdx + i]] = true;
+        }
+      } else if (!rendered[room + slot]) {
+        // Empty cell
+        const cell = document.createElement('td');
         cell.innerHTML = '';
+        row.appendChild(cell);
       }
-      row.appendChild(cell);
     });
     tbody.appendChild(row);
-  });
+  }
   table.appendChild(tbody);
   container.appendChild(table);
 }
