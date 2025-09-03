@@ -86,7 +86,14 @@ function renderSessionsTable(rooms) {
       const cell = document.createElement('td');
       const session = findSessionForSlot(rooms[room] || [], slot);
       if (session) {
-        cell.innerHTML = `<b>${session.title}</b><br><small>${(session.speakers||[]).map(s=>s.name).join(', ')}</small>`;
+        let titleHtml = session.title;
+        // If video is present, link to video. Otherwise, link to #
+        if (session.video) {
+          titleHtml = `<a href='https://vimeo.com/${session.video}' target='_blank' rel='noopener'>${session.title}</a>`;
+        } else {
+          titleHtml = `<a href='#' title='No video available'>${session.title}</a>`;
+        }
+        cell.innerHTML = `<b>${titleHtml}</b><br><small>${(session.speakers||[]).map(s=>s.name).join(', ')}</small>`;
       } else {
         cell.innerHTML = '';
       }
