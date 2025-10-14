@@ -1,17 +1,27 @@
 const CACHE_NAME = 'weekplan-v1';
+
+// Get the base path dynamically
+const getBasePath = () => {
+  const path = self.location.pathname;
+  return path.substring(0, path.lastIndexOf('/') + 1);
+};
+
+const basePath = getBasePath();
+
 const urlsToCache = [
-  '/',
-  '/style.css',
-  '/script.js',
-  '/manifest.json',
-  '/A0.html',
-  '/A1.html', 
-  '/A2.html',
-  '/H1.html',
-  '/H2.html',
-  '/H3.html',
-  '/H4.html'
-];
+  './',
+  './style.css',
+  './script.js',
+  './manifest.json',
+  './A0.html',
+  './A1.html', 
+  './A2.html',
+  './H1.html',
+  './H2.html',
+  './H3.html',
+  './H4.html',
+  './offline.html'
+].map(url => new URL(url, self.location).href);
 
 // Install service worker and cache resources
 self.addEventListener('install', event => {
@@ -67,7 +77,7 @@ self.addEventListener('fetch', event => {
         }).catch(() => {
           // If both cache and network fail, show offline page
           if (event.request.destination === 'document') {
-            return caches.match('/offline.html');
+            return caches.match('./offline.html') || caches.match(new URL('./offline.html', self.location).href);
           }
         });
       })
@@ -100,10 +110,10 @@ self.addEventListener('sync', event => {
 async function updateWeekPlan() {
   try {
     // Try to fetch latest content
-    const response = await fetch('/');
+    const response = await fetch('./');
     if (response.ok) {
       const cache = await caches.open(CACHE_NAME);
-      await cache.put('/', response);
+      await cache.put(new URL('./', self.location).href, response);
       console.log('Week plan updated');
     }
   } catch (error) {
@@ -115,8 +125,8 @@ async function updateWeekPlan() {
 self.addEventListener('push', event => {
   const options = {
     body: event.data ? event.data.text() : 'New week plan available!',
-    icon: '/icons/icon-192x192.png',
-    badge: '/icons/icon-72x72.png',
+    icon: './icons/icon-192x192.png',
+    badge: './icons/icon-72x72.png',
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),
@@ -126,12 +136,12 @@ self.addEventListener('push', event => {
       {
         action: 'explore',
         title: 'View Plan',
-        icon: '/icons/icon-96x96.png'
+        icon: './icons/icon-96x96.png'
       },
       {
         action: 'close',
         title: 'Close',
-        icon: '/icons/icon-96x96.png'
+        icon: './icons/icon-96x96.png'
       }
     ]
   };
@@ -147,7 +157,7 @@ self.addEventListener('notificationclick', event => {
   
   if (event.action === 'explore') {
     event.waitUntil(
-      clients.openWindow('/')
+      clients.openWindow('./')
     );
   }
 });

@@ -2,12 +2,12 @@
   "name": "Week Plan Viewer",
   "short_name": "WeekPlan",
   "description": "View weekly school plans for children",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#667eea",
   "theme_color": "#667eea",
   "orientation": "portrait-primary",
-  "scope": "/",
+  "scope": "./",
   "lang": "en",
   "categories": ["education", "productivity"],
   "icons": [
@@ -65,7 +65,7 @@
       "name": "Child A",
       "short_name": "A",
       "description": "View Child A's week plan",
-      "url": "/A0.html",
+      "url": "./A0.html",
       "icons": [
         {
           "src": "icons/icon-96x96.png",
@@ -77,7 +77,7 @@
       "name": "Child H",
       "short_name": "H",
       "description": "View Child H's week plan",
-      "url": "/",
+      "url": "./",
       "icons": [
         {
           "src": "icons/icon-96x96.png",
