@@ -170,3 +170,9 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 vevnv/
+
+# Project specific files
+A*.html
+H*.html
+*.pdf
+media/*

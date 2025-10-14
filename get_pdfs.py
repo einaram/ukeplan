@@ -30,24 +30,43 @@ def render_template(weekplans):
     template = templateEnv.get_template(TEMPLATE_FILE)
     flat_list = []
 
+    # Create comprehensive page data
+    all_pages = {}  # Store all pages by prefix
+    
     for kid in weekplans:
         logging.debug(f"Processing weekplan for prefix {kid['prefix']}")
+        prefix = kid["prefix"]
+        all_pages[prefix] = []
+        
         for i,x in enumerate(kid["images"]):
-            flat_list.append(dict(
+            page_data = dict(
                 image=x,
-                prefix=kid["prefix"],
+                prefix=prefix,
                 i=i,
-                html_filename=f"{kid['prefix']}{i}.html" if len(flat_list) > 0 else "index.html"
-                ))
+                html_filename=f"{prefix}{i}.html" if i > 0 else ("index.html" if prefix == "H" else f"{prefix}0.html"),
+                week=kid["week"]
+            )
+            flat_list.append(page_data)
+            all_pages[prefix].append(page_data)
 
     for i,image in enumerate(flat_list):
         logging.debug(f"Rendering template for image {i+1}/{len(flat_list)}")
+        
+        # Find pages for current prefix
+        current_prefix_pages = all_pages[image["prefix"]]
+        current_page_index = next(idx for idx, page in enumerate(current_prefix_pages) if page["i"] == image["i"])
+        
         context = {
             "image": image["image"],
             "prefix": image["prefix"],
             "i": image['i'],
+            "week": image["week"],
             "next": flat_list[i+1]['html_filename'] if i < len(flat_list) - 1 else flat_list[0]['html_filename'],
             "prev": flat_list[i-1]['html_filename'],
+            "total_pages": len(current_prefix_pages),
+            "current_page_num": current_page_index + 1,
+            "all_pages": all_pages,
+            "current_prefix_pages": current_prefix_pages
         }
         print(context)
         with open(OUT_PATH + "/" + image['html_filename'], "w") as file:

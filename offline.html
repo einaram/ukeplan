@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Week Plan - Offline</title>
+  <meta name="theme-color" content="#667eea">
+</head>
+<body>
+  <div class="header">
+    <h1>Week Plan</h1>
+    <div class="kid-selector">
+      <button class="kid-btn" disabled>A</button>
+      <button class="kid-btn" disabled>H</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="offline-container">
+      <div class="offline-icon">📱</div>
+      <h2>You're Offline</h2>
+      <p>Please check your internet connection and try again.</p>
+      <button onclick="window.location.reload()" class="nav-btn">Try Again</button>
+    </div>
+  </div>
+
+  <style>
+    .offline-container {
+      text-align: center;
+      padding: 2rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-top: 2rem;
+    }
+    
+    .offline-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+    
+    .offline-container h2 {
+      color: #667eea;
+      margin-bottom: 1rem;
+    }
+    
+    .offline-container p {
+      color: #666;
+      margin-bottom: 2rem;
+    }
+    
+    .kid-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  </style>
+</body>
+</html>

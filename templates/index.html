@@ -1,21 +1,133 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <meta charset="UTF-8">
   <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Week {{ week }} - {{ prefix }}{{ i + 1 }}</title>
+  
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#667eea">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="WeekPlan">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <!-- PWA Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-72x72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-72x72.png">
+  <link rel="apple-touch-icon" href="icons/icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192x192.png">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <h1>{{ title }}</h1>
-  <div class="slideshow-container">
-        <div class="mySlides" id="{{ prefix }}_{{ i }}">
-          <img src="{{ image }}" style="width:100%">
-          <div class="text">text</div>
-        </div>
-    <a class="prev" href="{{ prev }}">◀️</a>
-    <a class="next" href="{{ next }}">▶️</a>
+  <div class="header">
+    <h1>Week {{ week }}</h1>
+    <div class="kid-selector">
+      <button class="kid-btn {{ 'active' if prefix == 'A' else '' }}" onclick="switchToKid('A')">A</button>
+      <button class="kid-btn {{ 'active' if prefix == 'H' else '' }}" onclick="switchToKid('H')">H</button>
+    </div>
   </div>
-  <br>
+
+  <div class="main-content">
+    <!-- Main image viewer -->
+    <div class="slideshow-container">
+      <div class="mySlides" id="{{ prefix }}_{{ i }}">
+        <img src="{{ image }}" style="width:100%" alt="Page {{ i + 1 }}">
+        <div class="page-info">
+          {{ prefix }}{{ i + 1 }}
+        </div>
+      </div>
+      
+      <!-- Navigation arrows -->
+      <a class="nav-arrow prev" href="{{ prev }}">
+        <span>‹</span>
+      </a>
+      <a class="nav-arrow next" href="{{ next }}">
+        <span>›</span>
+      </a>
+    </div>
+
+    <!-- Compact navigation bar -->
+    <div class="nav-bar">
+      <a href="{{ prev }}" class="nav-btn">‹ Prev</a>
+      <div class="page-counter">{{ current_page_num }}/{{ total_pages }}</div>
+      <a href="{{ next }}" class="nav-btn">Next ›</a>
+    </div>
+
+    <!-- Current child's pages thumbnails -->
+    <div class="thumbnail-nav">
+      <h3>{{ prefix }} Pages</h3>
+      <div class="thumbnail-container">
+        {% for page in current_prefix_pages %}
+        <div class="thumbnail {{ 'active' if page.i == i else '' }}" 
+             onclick="navigateToPage('{{ page.html_filename }}')"
+             style="background-image: url('{{ page.image }}');">
+          <div class="thumbnail-label">{{ page.i + 1 }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Other child's pages (collapsed by default) -->
+    {% for other_prefix, other_pages in all_pages.items() if other_prefix != prefix %}
+    <div class="thumbnail-nav">
+      <details>
+        <summary>{{ other_prefix }} Pages</summary>
+        <div class="thumbnail-container">
+          {% for page in other_pages %}
+          <div class="thumbnail" 
+               onclick="navigateToPage('{{ page.html_filename }}')"
+               style="background-image: url('{{ page.image }}');">
+            <div class="thumbnail-label">{{ page.i + 1 }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </details>
+    </div>
+    {% endfor %}
+
+    <!-- Compact help section -->
+    <div class="help-section">
+      <details>
+        <summary>Controls</summary>
+        <ul>
+          <li><kbd>←</kbd><kbd>→</kbd> Navigate</li>
+          <li><kbd>A</kbd><kbd>H</kbd> Switch child</li>
+          <li>Swipe left/right</li>
+          <li>Tap arrows or buttons</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+
+  <!-- PWA Install Banner -->
+  <div id="installBanner" class="install-banner" style="display: none;">
+    <div class="install-content">
+      <span>📱 Install Week Plan app for quick access!</span>
+      <button onclick="installPWA()" class="install-btn">Install</button>
+      <button onclick="dismissInstall()" class="dismiss-btn">×</button>
+    </div>
+  </div>
+
+  <script>
+    // Store navigation data for JavaScript
+    window.pageData = {
+      current: '{{ prefix }}{{ i }}',
+      prefix: '{{ prefix }}',
+      pageIndex: {{ i }},
+      week: {{ week }},
+      prev: '{{ prev }}',
+      next: '{{ next }}',
+      currentImage: '{{ image }}',
+      totalPages: {{ total_pages }},
+      currentPageNum: {{ current_page_num }},
+      allPages: {{ all_pages | tojson }}
+    };
+  </script>
   <script src="script.js"></script>
 </body>
 </html>

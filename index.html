@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Week 42 - H1</title>
+  
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#667eea">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="WeekPlan">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <!-- PWA Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-72x72.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-72x72.png">
+  <link rel="apple-touch-icon" href="icons/icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192x192.png">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <div class="header">
+    <h1>Week 42</h1>
+    <div class="kid-selector">
+      <button class="kid-btn " onclick="switchToKid('A')">A</button>
+      <button class="kid-btn active" onclick="switchToKid('H')">H</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <!-- Main image viewer -->
+    <div class="slideshow-container">
+      <div class="mySlides" id="H_0">
+        <img src="media/weekplan_42_H_0.png" style="width:100%" alt="Page 1">
+        <div class="page-info">
+          H1
+        </div>
+      </div>
+      
+      <!-- Navigation arrows -->
+      <a class="nav-arrow prev" href="A2.html">
+        <span>‹</span>
+      </a>
+      <a class="nav-arrow next" href="H1.html">
+        <span>›</span>
+      </a>
+    </div>
+
+    <!-- Compact navigation bar -->
+    <div class="nav-bar">
+      <a href="A2.html" class="nav-btn">‹ Prev</a>
+      <div class="page-counter">1/3</div>
+      <a href="H1.html" class="nav-btn">Next ›</a>
+    </div>
+
+    <!-- Current child's pages thumbnails -->
+    <div class="thumbnail-nav">
+      <h3>H Pages</h3>
+      <div class="thumbnail-container">
+        
+        <div class="thumbnail active" 
+             onclick="navigateToPage('index.html')"
+             style="background-image: url('media/weekplan_42_H_0.png');">
+          <div class="thumbnail-label">1</div>
+        </div>
+        
+        <div class="thumbnail " 
+             onclick="navigateToPage('H1.html')"
+             style="background-image: url('media/weekplan_42_H_1.png');">
+          <div class="thumbnail-label">2</div>
+        </div>
+        
+        <div class="thumbnail " 
+             onclick="navigateToPage('H2.html')"
+             style="background-image: url('media/weekplan_42_H_2.png');">
+          <div class="thumbnail-label">3</div>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Other child's pages (collapsed by default) -->
+    
+    <div class="thumbnail-nav">
+      <details>
+        <summary>A Pages</summary>
+        <div class="thumbnail-container">
+          
+          <div class="thumbnail" 
+               onclick="navigateToPage('A0.html')"
+               style="background-image: url('media/weekplan_42_A_0.png');">
+            <div class="thumbnail-label">1</div>
+          </div>
+          
+          <div class="thumbnail" 
+               onclick="navigateToPage('A1.html')"
+               style="background-image: url('media/weekplan_42_A_1.png');">
+            <div class="thumbnail-label">2</div>
+          </div>
+          
+          <div class="thumbnail" 
+               onclick="navigateToPage('A2.html')"
+               style="background-image: url('media/weekplan_42_A_2.png');">
+            <div class="thumbnail-label">3</div>
+          </div>
+          
+        </div>
+      </details>
+    </div>
+    
+
+    <!-- Compact help section -->
+    <div class="help-section">
+      <details>
+        <summary>Controls</summary>
+        <ul>
+          <li><kbd>←</kbd><kbd>→</kbd> Navigate</li>
+          <li><kbd>A</kbd><kbd>H</kbd> Switch child</li>
+          <li>Swipe left/right</li>
+          <li>Tap arrows or buttons</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+
+  <!-- PWA Install Banner -->
+  <div id="installBanner" class="install-banner" style="display: none;">
+    <div class="install-content">
+      <span>📱 Install Week Plan app for quick access!</span>
+      <button onclick="installPWA()" class="install-btn">Install</button>
+      <button onclick="dismissInstall()" class="dismiss-btn">×</button>
+    </div>
+  </div>
+
+  <script>
+    // Store navigation data for JavaScript
+    window.pageData = {
+      current: 'H0',
+      prefix: 'H',
+      pageIndex: 0,
+      week: 42,
+      prev: 'A2.html',
+      next: 'H1.html',
+      currentImage: 'media/weekplan_42_H_0.png',
+      totalPages: 3,
+      currentPageNum: 1,
+      allPages: {"A": [{"html_filename": "A0.html", "i": 0, "image": "media/weekplan_42_A_0.png", "prefix": "A", "week": 42}, {"html_filename": "A1.html", "i": 1, "image": "media/weekplan_42_A_1.png", "prefix": "A", "week": 42}, {"html_filename": "A2.html", "i": 2, "image": "media/weekplan_42_A_2.png", "prefix": "A", "week": 42}], "H": [{"html_filename": "index.html", "i": 0, "image": "media/weekplan_42_H_0.png", "prefix": "H", "week": 42}, {"html_filename": "H1.html", "i": 1, "image": "media/weekplan_42_H_1.png", "prefix": "H", "week": 42}, {"html_filename": "H2.html", "i": 2, "image": "media/weekplan_42_H_2.png", "prefix": "H", "week": 42}]}
+    };
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
