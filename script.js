@@ -18,7 +18,39 @@ document.addEventListener('DOMContentLoaded', function() {
   preloadAdjacentPages();
   initializePWA();
   preventZoom();
+  initializeKidButtons();
 });
+
+function initializeKidButtons() {
+  console.log('Initializing kid buttons...');
+  
+  // Add event listeners for kid buttons to ensure they work in PWA
+  const kidButtons = document.querySelectorAll('.kid-btn');
+  console.log('Found', kidButtons.length, 'kid buttons');
+  
+  kidButtons.forEach(button => {
+    console.log('Adding listeners to button:', button.textContent);
+    
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('Kid button clicked:', this.textContent);
+      
+      const kidPrefix = this.textContent.trim();
+      switchToKid(kidPrefix);
+    });
+    
+    // Also add touch event for better mobile responsiveness
+    button.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('Kid button touched:', this.textContent);
+      
+      const kidPrefix = this.textContent.trim();
+      switchToKid(kidPrefix);
+    });
+  });
+}
 
 function initializeNavigation() {
   // Add loading state
@@ -142,8 +174,11 @@ function updateApp() {
 }
 
 function switchToKid(kidPrefix) {
+  console.log('switchToKid called with:', kidPrefix);
+  
   // Find the first page for the selected kid
   const targetPage = kidPrefix === 'H' ? 'index.html' : kidPrefix + '0.html';
+  console.log('Navigating to:', targetPage);
   
   // Add haptic feedback if available
   if (navigator.vibrate) {

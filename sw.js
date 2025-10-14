@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ukeplan-v2';
+const CACHE_NAME = 'ukeplan-v3';
 
 // Get the base path dynamically
 const getBasePath = () => {

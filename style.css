@@ -13,7 +13,7 @@ img {vertical-align: middle;}
 .header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -25,7 +25,7 @@ img {vertical-align: middle;}
 
 .header h1 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -36,16 +36,18 @@ img {vertical-align: middle;}
 }
 
 .kid-btn {
-  padding: 0.4rem 0.8rem;
+  padding: 0.35rem 0.7rem;
   border: 1px solid rgba(255,255,255,0.3);
   background: rgba(255,255,255,0.1);
   color: white;
-  border-radius: 15px;
+  border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  min-width: 45px;
+  min-width: 40px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .kid-btn:hover {
@@ -310,17 +312,22 @@ img {vertical-align: middle;}
 /* Mobile-specific optimizations */
 @media (max-width: 480px) {
   .header {
-    padding: 0.6rem 0.75rem;
+    padding: 0.4rem 0.75rem;
   }
   
   .header h1 {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
   }
   
   .kid-btn {
-    padding: 0.35rem 0.6rem;
-    font-size: 0.75rem;
-    min-width: 40px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
   }
   
   .main-content {
@@ -590,12 +597,16 @@ img {vertical-align: middle;}
 
 @media only screen and (max-width: 480px) {
   .header h1 {
-    font-size: 1.4rem;
+    font-size: 0.9rem;
   }
   
   .kid-btn {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
   
   .page-info {
