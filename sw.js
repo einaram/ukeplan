@@ -1,4 +1,4 @@
-const CACHE_NAME = 'weekplan-v1';
+const CACHE_NAME = 'ukeplan-v2';
 
 // Get the base path dynamically
 const getBasePath = () => {
@@ -124,7 +124,7 @@ async function updateWeekPlan() {
 // Push notifications (for future use)
 self.addEventListener('push', event => {
   const options = {
-    body: event.data ? event.data.text() : 'New week plan available!',
+    body: event.data ? event.data.text() : 'New ukeplan available!',
     icon: './icons/icon-192x192.png',
     badge: './icons/icon-72x72.png',
     vibrate: [100, 50, 100],
@@ -147,7 +147,7 @@ self.addEventListener('push', event => {
   };
   
   event.waitUntil(
-    self.registration.showNotification('Week Plan', options)
+    self.registration.showNotification('Ukeplan', options)
   );
 });
 

@@ -1,6 +1,6 @@
 {
-  "name": "Week Plan Viewer",
-  "short_name": "WeekPlan",
+  "name": "Ukeplan",
+  "short_name": "Ukeplan",
   "description": "View weekly school plans for children",
   "start_url": "./",
   "display": "standalone",

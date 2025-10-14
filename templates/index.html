@@ -4,13 +4,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <meta charset="UTF-8">
   <link rel="stylesheet" type="text/css" href="style.css">
-  <title>Week {{ week }} - {{ prefix }}{{ i + 1 }}</title>
+  <title>Ukeplan - Week {{ week }} - {{ prefix }}{{ i + 1 }}</title>
   
   <!-- PWA Meta Tags -->
   <meta name="theme-color" content="#667eea">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="WeekPlan">
+  <meta name="apple-mobile-web-app-title" content="Ukeplan">
   <meta name="mobile-web-app-capable" content="yes">
   
   <!-- PWA Icons -->
@@ -25,7 +25,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>Week {{ week }}</h1>
+    <h1>Ukeplan</h1>
     <div class="kid-selector">
       <button class="kid-btn {{ 'active' if prefix == 'A' else '' }}" onclick="switchToKid('A')">A</button>
       <button class="kid-btn {{ 'active' if prefix == 'H' else '' }}" onclick="switchToKid('H')">H</button>
@@ -107,7 +107,7 @@
   <!-- PWA Install Banner -->
   <div id="installBanner" class="install-banner" style="display: none;">
     <div class="install-content">
-      <span>📱 Install Week Plan app for quick access!</span>
+      <span>📱 Install Ukeplan app for quick access!</span>
       <button onclick="installPWA()" class="install-btn">Install</button>
       <button onclick="dismissInstall()" class="dismiss-btn">×</button>
     </div>
