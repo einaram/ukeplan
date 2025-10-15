@@ -9,6 +9,13 @@ body {
 }
 img {vertical-align: middle;}
 
+/* Improve mobile tap responsiveness */
+.nav-arrow, .nav-btn, .kid-btn, .thumbnail, .install-btn, .dismiss-btn {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 /* Compact Header for Mobile */
 .header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

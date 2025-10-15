@@ -369,13 +369,20 @@ function addTouchFeedback() {
 }
 
 function preventZoom() {
-  // Prevent double-tap zoom on buttons and images
-  const preventZoomElements = document.querySelectorAll('.nav-arrow, .nav-btn, .kid-btn, .slideshow-container img');
-  
-  preventZoomElements.forEach(element => {
-    element.addEventListener('touchend', function(event) {
-      event.preventDefault();
-    });
+  // Prevent double-tap zoom while preserving normal tap/click behavior.
+  // Strategy: track last touchend time and only preventDefault if within threshold (e.g. 400ms)
+  const elements = document.querySelectorAll('.nav-arrow, .nav-btn, .kid-btn, .slideshow-container img');
+  let lastTouchEnd = 0;
+  const DOUBLE_TAP_THRESHOLD = 400; // ms
+  elements.forEach(el => {
+    el.addEventListener('touchend', function(e) {
+      const now = Date.now();
+      if (now - lastTouchEnd <= DOUBLE_TAP_THRESHOLD) {
+        // Second tap: prevent zoom and synthetic click (we'll trigger navigation manually if needed)
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, { passive: false });
   });
 }
 
