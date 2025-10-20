@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initializePWA();
   preventZoom();
   initializeKidButtons();
+  initializeNavigationButtons();
 });
 
 function initializeKidButtons() {
@@ -48,6 +49,38 @@ function initializeKidButtons() {
       
       const kidPrefix = this.textContent.trim();
       switchToKid(kidPrefix);
+    });
+  });
+}
+
+function initializeNavigationButtons() {
+  console.log('Initializing navigation buttons...');
+  
+  // Add event listeners for navigation buttons and arrows
+  const navButtons = document.querySelectorAll('.nav-arrow, .nav-btn');
+  console.log('Found', navButtons.length, 'navigation buttons');
+  
+  navButtons.forEach(button => {
+    // Add touchend event for better mobile responsiveness
+    button.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const href = this.getAttribute('href');
+      if (href) {
+        console.log('Navigation button touched, going to:', href);
+        navigateToPage(href);
+      }
+    }, { passive: false });
+    
+    // Keep click handler for non-touch devices
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const href = this.getAttribute('href');
+      if (href) {
+        console.log('Navigation button clicked, going to:', href);
+        navigateToPage(href);
+      }
     });
   });
 }
@@ -369,16 +402,16 @@ function addTouchFeedback() {
 }
 
 function preventZoom() {
-  // Prevent double-tap zoom while preserving normal tap/click behavior.
-  // Strategy: track last touchend time and only preventDefault if within threshold (e.g. 400ms)
-  const elements = document.querySelectorAll('.nav-arrow, .nav-btn, .kid-btn, .slideshow-container img');
+  // Prevent double-tap zoom on images only
+  // Navigation buttons are handled by initializeNavigationButtons() and initializeKidButtons()
+  const elements = document.querySelectorAll('.slideshow-container img');
   let lastTouchEnd = 0;
   const DOUBLE_TAP_THRESHOLD = 400; // ms
   elements.forEach(el => {
     el.addEventListener('touchend', function(e) {
       const now = Date.now();
       if (now - lastTouchEnd <= DOUBLE_TAP_THRESHOLD) {
-        // Second tap: prevent zoom and synthetic click (we'll trigger navigation manually if needed)
+        // Second tap on image: prevent zoom
         e.preventDefault();
       }
       lastTouchEnd = now;

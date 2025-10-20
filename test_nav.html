@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Navigation Test</title>
+  
+  <style>
+    body { padding: 20px; font-family: sans-serif; }
+    .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+    .status { padding: 10px; margin: 10px 0; background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <h1>Mobile Navigation Test</h1>
+  
+  <div class="test-section">
+    <h2>Touch these buttons on mobile:</h2>
+    
+    <div class="nav-bar">
+      <a href="A0.html" class="nav-btn">‹ Prev</a>
+      <div class="page-counter">Test Page</div>
+      <a href="H1.html" class="nav-btn">Next ›</a>
+    </div>
+    
+    <div style="margin-top: 20px;">
+      <a class="nav-arrow prev" href="A0.html">
+        <span>‹</span>
+      </a>
+      <a class="nav-arrow next" href="H1.html">
+        <span>›</span>
+      </a>
+    </div>
+    
+    <div class="kid-selector" style="margin-top: 20px;">
+      <button class="kid-btn" onclick="switchToKid('A')">A</button>
+      <button class="kid-btn active" onclick="switchToKid('H')">H</button>
+    </div>
+  </div>
+  
+  <div class="status" id="status">
+    Status: Ready. Tap buttons above to test.
+  </div>
+  
+  <script>
+    // Store navigation data for JavaScript
+    window.pageData = {
+      current: 'TEST',
+      prefix: 'H',
+      pageIndex: 0,
+      week: 42,
+      prev: 'A0.html',
+      next: 'H1.html',
+      currentImage: 'media/test.png',
+      totalPages: 3,
+      currentPageNum: 1,
+      allPages: {},
+      timestamp: Date.now()
+    };
+    
+    // Add logging
+    function updateStatus(msg) {
+      document.getElementById('status').textContent = 'Status: ' + msg;
+      console.log('TEST:', msg);
+    }
+    
+    // Override navigateToPage for testing
+    window.navigateToPage = function(page) {
+      updateStatus('navigateToPage called with: ' + page);
+      alert('Navigation to: ' + page);
+    };
+    
+    window.switchToKid = function(kid) {
+      updateStatus('switchToKid called with: ' + kid);
+      alert('Switch to kid: ' + kid);
+    };
+  </script>
+  <script src="script.js"></script>
+  
+  <script>
+    // Log when functions are initialized
+    setTimeout(() => {
+      updateStatus('Page loaded. Functions initialized. Try tapping buttons.');
+    }, 500);
+  </script>
+</body>
+</html>
