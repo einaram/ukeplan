@@ -36,7 +36,7 @@
     <!-- Main image viewer -->
     <div class="slideshow-container">
       <div class="mySlides" id="{{ prefix }}_{{ i }}">
-        <img src="{{ image }}" style="width:100%" alt="Page {{ i + 1 }}">
+        <img src="{{ image }}?v={{ timestamp }}" style="width:100%" alt="Page {{ i + 1 }}">
         <div class="page-info">
           {{ prefix }}{{ i + 1 }}
         </div>
@@ -65,7 +65,7 @@
         {% for page in current_prefix_pages %}
         <div class="thumbnail {{ 'active' if page.i == i else '' }}" 
              onclick="navigateToPage('{{ page.html_filename }}')"
-             style="background-image: url('{{ page.image }}');">
+             style="background-image: url('{{ page.image }}?v={{ timestamp }}');">
           <div class="thumbnail-label">{{ page.i + 1 }}</div>
         </div>
         {% endfor %}
@@ -81,7 +81,7 @@
           {% for page in other_pages %}
           <div class="thumbnail" 
                onclick="navigateToPage('{{ page.html_filename }}')"
-               style="background-image: url('{{ page.image }}');">
+               style="background-image: url('{{ page.image }}?v={{ timestamp }}');">
             <div class="thumbnail-label">{{ page.i + 1 }}</div>
           </div>
           {% endfor %}
@@ -122,10 +122,11 @@
       week: {{ week }},
       prev: '{{ prev }}',
       next: '{{ next }}',
-      currentImage: '{{ image }}',
+      currentImage: '{{ image }}?v={{ timestamp }}',
       totalPages: {{ total_pages }},
       currentPageNum: {{ current_page_num }},
-      allPages: {{ all_pages | tojson }}
+      allPages: {{ all_pages | tojson }},
+      timestamp: {{ timestamp }}
     };
   </script>
   <script src="script.js"></script>

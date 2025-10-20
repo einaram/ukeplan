@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ukeplan-v3';
+const CACHE_NAME = 'ukeplan-v4'; // Increment version to force cache refresh
 
 // Get the base path dynamically
 const getBasePath = () => {
@@ -41,6 +41,32 @@ self.addEventListener('install', event => {
 
 // Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', event => {
+  const requestUrl = new URL(event.request.url);
+  
+  // For image requests with timestamp query params, always fetch fresh
+  if (requestUrl.pathname.includes('weekplan_') && requestUrl.search.includes('v=')) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          // Cache the fresh image
+          if (response && response.status === 200) {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return response;
+        })
+        .catch(() => {
+          // If network fails, try cache without query params
+          const urlWithoutQuery = new URL(event.request.url);
+          urlWithoutQuery.search = '';
+          return caches.match(urlWithoutQuery.href);
+        })
+    );
+    return;
+  }
+  
   event.respondWith(
     caches.match(event.request)
       .then(response => {
@@ -96,8 +122,18 @@ self.addEventListener('activate', event => {
           }
         })
       );
+    }).then(() => {
+      // Take control of all pages immediately
+      return self.clients.claim();
     })
   );
+});
+
+// Handle messages from the client
+self.addEventListener('message', event => {
+  if (event.data && event.data.action === 'skipWaiting') {
+    self.skipWaiting();
+  }
 });
 
 // Background sync for updating content

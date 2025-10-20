@@ -5,6 +5,7 @@ import jinja2
 import tempfile
 from typing import Dict
 import re
+import time
 
 from pdf2image import convert_from_path
 from playwright.sync_api import sync_playwright
@@ -22,6 +23,10 @@ OUT_PATH = os.getenv("OUT_PATH", ".")
 
 def render_template(weekplans):
     logging.info("Starting template rendering")
+    # Generate a timestamp for cache busting
+    timestamp = int(time.time())
+    logging.info(f"Using timestamp for cache busting: {timestamp}")
+    
     context = {}
     context["title"] = "My Title"
     templateLoader = jinja2.FileSystemLoader(searchpath="./templates")
@@ -66,7 +71,8 @@ def render_template(weekplans):
             "total_pages": len(current_prefix_pages),
             "current_page_num": current_page_index + 1,
             "all_pages": all_pages,
-            "current_prefix_pages": current_prefix_pages
+            "current_prefix_pages": current_prefix_pages,
+            "timestamp": timestamp  # Add timestamp for cache busting
         }
         print(context)
         with open(OUT_PATH + "/" + image['html_filename'], "w") as file:
